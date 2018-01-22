@@ -1,18 +1,27 @@
+// *** p104.js ***
+// - Three js Buffer Geometry
+// - fbm simplex noise test
+// - There is no normal information in this buffer geometry 
+//Dec 20, 2017 yujieH
+
 import * as THREE from 'three'
 import SimplexNoise from 'simplex-noise'
 import * as dat from 'dat-gui'
 import triangulate from 'delaunay-triangulate'
 
+import * as Noise from 'noisejs'
 
 
-var lenght = 6
-var density = 75
+
+var lenght = 10
+var density = 180
 
 class Args {
   constructor(){
-    this.length = 6
-    this.density = 75
+    this.length = 10
+    this.density = 150
     this.noiseRange = 0.22
+    this.finFactor = 1
     this.x_factor = 0.8
     this.tDelta = 0.008
     this.xDelta = 0.0072
@@ -26,6 +35,8 @@ var geometry, vertices = [], triVertices = []
 var points, wireframe, line
 
 var simplex = new SimplexNoise(Math.random)
+var noise = new Noise.Noise(Math.random())
+
 var t = 0
 var xShift = 0
 
@@ -35,8 +46,9 @@ animate()
 function initGUI(){
   var gui = new dat.GUI()
   gui.add(controller, 'length')
-  gui.add(controller, 'density').onChange(function(value){})
-  gui.add(controller, 'noiseRange',-1,1)
+  gui.add(controller, 'density')
+  gui.add(controller, 'noiseRange',-9,9)
+  gui.add(controller, 'finFactor',-3,3)
   gui.add(controller, 'x_factor',0,2)
   gui.add(controller, 'tDelta', 0.001, 0.1)
   gui.add(controller, 'xDelta', 0.001, 0.1)
@@ -50,7 +62,7 @@ function init(){
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 500);
-  camera.position.set(0, 6, 10);
+  camera.position.set(0, 3, 10);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
   let step = lenght / density
@@ -118,7 +130,17 @@ function animate(){
   for (var i = 0; i < density * density ; i++) {
     let row = Math.floor(i/density)
     let col = i%density
-    vertices[i*3 + 1] = simplex.noise3D((step* row) * controller.x_factor + xShift , (step * col) * controller.x_factor  , t) * controller.noiseRange ;
+
+    //vertices[i*3 + 1] = simplex.noise3D((step* row) * controller.x_factor * 0.125 + xShift , (step * col) * controller.x_factor*0.125  , t*0.25) * controller.noiseRange * 16 ;
+    vertices[i*3 + 1] = 2 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 0.5 + xShift , (step * col) * controller.x_factor * 0.5  , t) )
+    vertices[i*3 + 1] += 1 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor + xShift , (step * col) * controller.x_factor  , t) )
+    vertices[i*3 + 1] += 1/2 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 2 + xShift , (step * col) * controller.x_factor * 2 , t) )
+    vertices[i*3 + 1] += 1/4 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 4 + xShift , (step * col) * controller.x_factor * 4 , t) )
+    vertices[i*3 + 1] += 1/8 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 8 + xShift , (step * col) * controller.x_factor * 8 , t) )
+    vertices[i*3 + 1] += 1/16 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 16 + xShift , (step * col) * controller.x_factor * 16 , t) )
+    vertices[i*3 + 1] += 1/32 * controller.noiseRange * Math.abs( simplex.noise3D((step* row) * controller.x_factor * 32 + xShift , (step * col) * controller.x_factor * 32 , t) )
+    vertices[i*3 + 1] = vertices[i*3 + 1] * controller.finFactor
+
   }
   setTriVertices()
 
