@@ -13,7 +13,7 @@ import * as Noise from 'noisejs'
 
 
 var lenght = 3
-var density = 100
+var density = 150
 
 class Args {
   constructor(){
@@ -82,10 +82,11 @@ function init(){
   geometry.dynamic = true
   geometry.addAttribute('position', new THREE.Float32BufferAttribute(triVertices, 3).setDynamic(true))
   geometry.addAttribute('normal', new THREE.Float32BufferAttribute(triNormal, 3).setDynamic(true))
-  material = new THREE.MeshNormalMaterial( {color: 0xffff00, side:THREE.DoubleSide} );
+  material = new THREE.MeshPhongMaterial( {color: 0xeeeeee} );
   // material.wireframe = true
   mesh = new THREE.Mesh(geometry, material)
   scene.add( mesh );
+
 
   // var geometry = new THREE.PlaneGeometry( 1, 1, 25 );
   // var material = new THREE.MeshPhongMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
@@ -93,21 +94,18 @@ function init(){
   // plane.position.set(0,0,0)
   // scene.add( plane );
 
-  var geometryX = new THREE.SphereGeometry( 0.6, 32, 32 );
-  var materialX = new THREE.MeshNormalMaterial( );
+  var geometryX = new THREE.SphereGeometry( 0.1, 32, 32 );
+  var materialX = new THREE.MeshPhongMaterial( {color: 0xeeeeee});
   var sphereX = new THREE.Mesh( geometryX, materialX );
-  sphereX.position.set(0,1,-10)
+  sphereX.position.set(0,1,0)
   scene.add( sphereX );
 
-  var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-  var helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
-  scene.add( helper );
 
-  // var light = new THREE.PointLight( 0xff0000, 1, 100 );
-  // light.position.set( 5, 5, 5 );
-  // scene.add( light );
+  var light = new THREE.PointLight( 0xf0f0ff, 1, 100 );
+  light.position.set( 0, 1.3, 0 );
+  scene.add( light );
 
-  var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+  var light = new THREE.AmbientLight( 0x404040, 0.5 ); // soft white light
   scene.add( light );
 
   renderer.render(scene, camera)
@@ -135,11 +133,11 @@ function setTriVertices(){
       var ab = new THREE.Vector3()
       cb.subVectors(pA, pB)
       ab.subVectors(pC, pB)
-      ab.cross(cb)
-      ab.normalize()
-      var nx = ab.x
-      var ny = ab.y
-      var nz = ab.z
+      cb.cross(ab)
+      cb.normalize()
+      var nx = cb.x
+      var ny = cb.y
+      var nz = cb.z
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
@@ -156,11 +154,11 @@ function setTriVertices(){
       var ab = new THREE.Vector3()
       cb.subVectors(pA, pB)
       ab.subVectors(pC, pB)
-      cb.cross(ab)
-      cb.normalize()
-      var nx = cb.x
-      var ny = cb.y
-      var nz = cb.z
+      ab.cross(cb)
+      ab.normalize()
+      var nx = ab.x
+      var ny = ab.y
+      var nz = ab.z
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
@@ -177,11 +175,11 @@ function setTriVertices(){
       var ab = new THREE.Vector3()
       cb.subVectors(pA, pB)
       ab.subVectors(pC, pB)
-      ab.cross(cb)
-      ab.normalize()
-      var nx = ab.x
-      var ny = ab.y
-      var nz = ab.z
+      cb.cross(ab)
+      cb.normalize()
+      var nx = cb.x
+      var ny = cb.y
+      var nz = cb.z
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
@@ -197,11 +195,11 @@ function setTriVertices(){
       var ab = new THREE.Vector3()
       cb.subVectors(pA, pB)
       ab.subVectors(pC, pB)
-      cb.cross(ab)
-      cb.normalize()
-      nx = cb.x
-      ny = cb.y
-      nz = cb.z
+      ab.cross(cb)
+      ab.normalize()
+      nx = ab.x
+      ny = ab.y
+      nz = ab.z
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)
       triNormal.push(nx, ny, nz)

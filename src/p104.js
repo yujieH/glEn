@@ -1,7 +1,7 @@
 // *** p104.js ***
 // - Three js Buffer Geometry
 // - fbm simplex noise test
-// - There is no normal information in this buffer geometry 
+// - There is no normal information in this buffer geometry
 //Dec 20, 2017 yujieH
 
 import * as THREE from 'three'
@@ -92,6 +92,7 @@ function init(){
   scene.add( line );
   renderer.render(scene, camera)
 }
+
 
 
 
