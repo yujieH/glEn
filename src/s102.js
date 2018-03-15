@@ -1,4 +1,5 @@
 // *** s102.js ***
+// simplex noise texture
 // Mar 08 2018 yujieH
 
 import * as THREE from 'three'

@@ -1,6 +1,7 @@
 // *** s101.js ***
 // fbm simplex noise
 // basic material
+// mirro noise plane
 // Mar 06 2018 yujieH
 
 
