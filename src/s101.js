@@ -126,8 +126,8 @@ let init = function () {
 
     noisePlaneBufferMaterial = new THREE.ShaderMaterial( {
       vertexShader: document.getElementById('vertexShader').textContent,
-      fragmentShader: document.getElementById('fragmentShader-dot').textContent,
-      // fragmentShader: document.getElementById('fragmentShader-stripe2').textContent,
+      // fragmentShader: document.getElementById('fragmentShader-dot').textContent,
+      fragmentShader: document.getElementById('fragmentShader-stripe2').textContent,
       transparent: true
     } )
     // noisePlaneBufferMaterial = new THREE.MeshBasicMaterial( {color: 0x333333, transparent : true} )
